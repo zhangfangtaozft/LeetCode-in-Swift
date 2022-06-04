@@ -1,0 +1,59 @@
+# 3. Longest Substring Without Repeating Characters
+
+Given a string s, find the length of the longest substring without repeating characters.
+
+ 
+
+Example 1:
+
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+Example 2:
+
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+Example 3:
+
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+ 
+
+Constraints:
+
+0 <= s.length <= 5 * 104
+s consists of English letters, digits, symbols and spaces.
+
+# 思路
+
+解题思路：缓冲区存储子串，每从S中顺序提取一个字符，先观察该字符是否在缓冲子串中。若在，则搜索该相同字符出现范围，将该相同字符与其之前的所有字符删除，在缓冲串末尾加入字符。若不在则加入字符，比较最大字符串和当前子串长，若子串长大于最大值，则替换。继续循环，直到s中字符循环结束。
+
+```swift
+func lengthOfLongestSubstring(_ s: String) -> Int {
+    let s = s.utf8CString.dropLast()
+    var cache: [Int] = Array(repeating: 0, count: 128)
+    var maxValue: Int = 0
+    var j: Int = 0
+    var i: Int = 0
+    for index in s.indices {
+        j = max(j, cache[s[index]])
+        cache[s[index]] = i + 1
+        maxValue = max(i - j + 1, maxValue)
+        i += 1
+    }
+    return maxValue
+}
+
+extension Array {
+    subscript(_ i: Int8) -> Element {
+        get {
+            return self[Int(i)]
+        } set(from) {
+            self[Int(i)] = from
+        }
+    }
+}
+```
