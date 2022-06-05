@@ -1,0 +1,75 @@
+# 4. Median of Two Sorted Arrays
+
+Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+
+The overall run time complexity should be O(log (m+n)).
+
+ 
+
+Example 1:
+
+Input: nums1 = [1,3], nums2 = [2]
+Output: 2.00000
+Explanation: merged array = [1,2,3] and median is 2.
+Example 2:
+
+Input: nums1 = [1,2], nums2 = [3,4]
+Output: 2.50000
+Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
+ 
+
+Constraints:
+
+nums1.length == m
+nums2.length == n
+0 <= m <= 1000
+0 <= n <= 1000
+1 <= m + n <= 2000
+-106 <= nums1[i], nums2[i] <= 106
+
+# 答案：
+
+```swift
+class Solution {
+    func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
+       let  mergedArray = merge(nums1, nums2)
+        
+        if mergedArray.count % 2 == 0 {
+            let index1 = mergedArray.count / 2
+            let index2 = mergedArray.count / 2  - 1
+            let result = Double(mergedArray[index1] + mergedArray[index2])
+            return result / 2.0
+        } else {
+            let index = mergedArray.count / 2
+            return Double(mergedArray[index])
+        }
+    }
+    
+    private func merge(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+        var resArray = [Int]()
+        var i = 0
+        var j = 0
+        while(i < nums1.count && j < nums2.count) {
+            if nums1[i] < nums2[j] {
+                resArray.append(nums1[i])
+                i += 1
+            } else {
+                resArray.append(nums2[j])
+                j += 1
+            }
+        }
+        
+        while i < nums1.count {
+            resArray.append(nums1[i])
+            i += 1
+        }
+        
+        while j < nums2.count {
+            resArray.append(nums2[j])
+            j += 1
+        }
+        
+        return resArray
+    }
+}
+```
