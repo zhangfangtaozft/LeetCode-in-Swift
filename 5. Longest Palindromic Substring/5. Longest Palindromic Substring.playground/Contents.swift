@@ -1,0 +1,43 @@
+/*
+ Given a string s, return the longest palindromic substring in s.
+
+  
+
+ Example 1:
+
+ Input: s = "babad"
+ Output: "bab"
+ Explanation: "aba" is also a valid answer.
+ Example 2:
+
+ Input: s = "cbbd"
+ Output: "bb"
+  
+
+ Constraints:
+
+ 1 <= s.length <= 1000
+ s consist of only digits and English letters.
+ */
+
+func longestPalindrome(_ s: String) -> String {
+    var a = Array(s), start = 0, len = 1, center = 0
+    while center < a.count {
+        var l = center, r = center
+        while r < a.count - 1 && a[l] == a[r + 1] {
+            r += 1
+        }
+        center  = r + 1
+        while l > 0 && r < a.count - 1 && a[l - 1] == a[r + 1] {
+            l -= 1
+            r += 1
+        }
+        if len < r - l + 1 {
+            len  = r - l + 1
+            start  = l
+        }
+    }
+    return String(s.prefix(start + len).suffix(len))
+}
+
+longestPalindrome("babad")
